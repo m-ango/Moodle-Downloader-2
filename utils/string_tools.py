@@ -3,7 +3,7 @@ import html
 
 from sys import platform
 from pathlib import Path
-
+from config_service.config_helper import ConfigHelper
 
 class StringTools:
 
@@ -13,25 +13,26 @@ class StringTools:
         @param name: The String that should be filtered
         @return: A filtered String, that can be used as a filename.
         """
-
+        
         # Moodle saves the title of a section in HTML-Format,
         # so we need to unescape the string
-
+        
         name = html.unescape(name)
         # Forward and Backward Slashes are not good for filenames
         name = name.replace(os.path.sep, '|')
-        name = name.replace('\\', '-')
         name = name.replace('/', '-')
-        name = name.replace(':', '-')
-        name = name.replace('?', '')
-        name = name.replace('*', '')
-        name = name.replace('<', '(')
-        name = name.replace('>', ')')
-        name = name.replace('|', '-')
-        name = name.replace('"', '')
-        name = name.replace('\n', ' ')
-        name = name.replace('\r', ' ')
-        name = name.rstrip('. ')
+        if ConfigHelper.get_property("win-mode") == true:
+            name = name.replace('\\', '-')
+            name = name.replace(':', '-')
+            name = name.replace('?', '')
+            name = name.replace('*', '')
+            name = name.replace('<', '(')
+            name = name.replace('>', ')')
+            name = name.replace('|', '-')
+            name = name.replace('"', '')
+            name = name.replace('\n', ' ')
+            name = name.replace('\r', ' ')
+            name = name.rstrip('. ')
 
         return name
 
