@@ -21,7 +21,7 @@ class StringTools:
         # Forward and Backward Slashes are not good for filenames
         name = name.replace(os.path.sep, '|')
         name = name.replace('/', '-')
-        if ConfigHelper.get_property("win-mode") == true:
+        if ConfigHelper.get_property("win_mode") == true:
             name = name.replace('\\', '-')
             name = name.replace(':', '-')
             name = name.replace('?', '')
