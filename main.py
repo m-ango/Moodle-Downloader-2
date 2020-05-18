@@ -67,7 +67,7 @@ def run_init(storage_path, use_sso=False, skip_cert_verify=False, win_mode=False
     else:
         moodle.interactively_acquire_token()
             
-    if (win_mode) or sys.platform="win32":
+    if (win_mode) or sys.platform='win32':
         config.set_property('win_mode', True)
         
     print('Configuration finished and saved!')
