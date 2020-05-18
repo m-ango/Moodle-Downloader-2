@@ -344,7 +344,11 @@ parser.add_argument('--sso', default=False, action='store_true',
                     ' Single Sign On (SSO) login process during' +
                     'initialization.'
                     )
-
+parser.add_argument('--win-mode',default=False, action='store_true',
+                    help='Enables the replacement of special characters.' +
+                    ' Is only required if this script runs on a server' +
+                    ' which is accessed by Windows clients.'
+                    )
 args = parser.parse_args()
 
 use_sso = args.sso
