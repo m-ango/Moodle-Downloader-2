@@ -41,7 +41,7 @@ class ReRaiseOnError(logging.StreamHandler):
             raise RuntimeError(record.msg)
 
 
-def run_init(storage_path, use_sso=False, skip_cert_verify=False):
+def run_init(storage_path, use_sso=False, skip_cert_verify=False, win_mode=False):
     config = ConfigHelper(storage_path)
 
     if config.is_present():
@@ -66,7 +66,10 @@ def run_init(storage_path, use_sso=False, skip_cert_verify=False):
         moodle.interactively_acquire_sso_token()
     else:
         moodle.interactively_acquire_token()
-
+            
+    if (win_mode) or sys.platform=win32:
+        config.set_property('win_mode', True)
+        
     print('Configuration finished and saved!')
 
     if (storage_path == '.'):
@@ -345,7 +348,8 @@ parser.add_argument('--sso', default=False, action='store_true',
                     'initialization.'
                     )
 parser.add_argument('--win-mode',default=False, action='store_true',
-                    help='Enables the replacement of special characters.' +
+                    help='This flag can be used together with --init.' +
+                    ' Enables the replacement of special characters.' +
                     ' Is only required if this script runs on a server' +
                     ' which is accessed by Windows clients.'
                     )
@@ -355,9 +359,10 @@ use_sso = args.sso
 storage_path = args.path
 skip_cert_verify = args.skip_cert_verify
 without_downloading_files = args.without_downloading_files
+win_mode = args.win_mode
 
 if args.init:
-    run_init(storage_path, use_sso, skip_cert_verify)
+    run_init(storage_path, use_sso, skip_cert_verify,win_mode)
 elif args.config:
     run_configure(storage_path, skip_cert_verify)
 elif args.new_token:
